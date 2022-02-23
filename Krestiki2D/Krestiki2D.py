@@ -61,49 +61,24 @@ def askwin(win_combinations):
             return False
     return True
 
-def win(n):
-    k=0
-    Temp=True
-    # проверка по строкам
-    for mass_stroka in arraysetka:
-        for i in range(len(mass_stroka)-1):
-            if mass_stroka[i]!=mass_stroka[i+1]:
-               Temp=False
-            else:
-                Temp=True  
-    if Temp:
-        return True
-        # проверка по столбцам
-    k=0
-    Temp=True
-    for i in range(n-1):
-        if arraysetka[i][k]!=arraysetka[i+1][k]:
-            Temp=False
-        else:
-            Temp=True
-        k+=1
-    if Temp:
-        return True
-     # проверка по диагоналям
-    k=0
-    for i in range(n-1):
-        if arraysetka[i][k]!=arraysetka[i+1][k+1]:
-                Temp=False
-        else:
-            Temp=True
-        k+=1
-    if Temp:
-        return True
-    Temp=True
-    k=n-1
-    for i in range(n-1):
-        if arraysetka[i][k]!=arraysetka[i+1][k-1]:
-            Temp=False
-        else:
-            Temp=True
-        k+=1
-    if Temp:
-        return True
+def win(setka_):
+
+    # проверка по строкам  
+    # проверка по столбцам
+ 
+    Astolbec=[]
+    Astroka=[]
+    ADiagDown=[]
+    ADiagUp=[]
+    for i in range(setka_):
+       for j in range(setka_):
+             Astolbec.append(arraysetka[j][i])
+             Astroka.append(arraysetka[i][j])
+       ADiagUp.append(arraysetka[i][setka_-i])      
+       ADiagDown.append(arraysetka[i][i])
+
+       if askwin(Astolbec) or askwin(Astroka): return True
+       if askwin(ADiagDown) or askwin(ADiagUp): return True
     return False
 
 def GetSymbol():    
