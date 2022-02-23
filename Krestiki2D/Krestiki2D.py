@@ -1,7 +1,7 @@
 # сделать двумерный массив
 print ("Возврат хода - буква R")
 setka=int(input('введи размер желаемого поля: '))
-
+fulldlina=len(str(setka**2))
 def is_integer(s):
     try:
         int(s)
@@ -31,9 +31,10 @@ def vvod_XO(bukva_,n):
           vvod_XO(bukva_,n)    
         
 
-def ResearchOfSize(current_element,maxlensymbol_):    
+def ResearchOfSize(current_element):    
+    global fulldlina
     dlina=len(str(current_element))
-    return maxlensymbol_-dlina
+    return fulldlina-dlina
 
 
 def vuvod_stroka(setka_,k): 
@@ -41,16 +42,18 @@ def vuvod_stroka(setka_,k):
     maxlensymbol=len(str(setka_**2))
     for i in range(k,k+setka_):
         stroka+=str(arraysetka[i])
-        stroka+=' '*ResearchOfSize(arraysetka[i],maxlensymbol)
+        stroka+=' '*ResearchOfSize(arraysetka[i])
         stroka+='|'
     return stroka
 
 def ToConsoleArray(setka_):    
     t=0
     for i in range(setka_):
-        stroka=vuvod_stroka(setka_,t)
+        stroka='|'
+        for k in range(setka_):
+            stroka+=str(arraysetka[i][k]) +' '*ResearchOfSize(arraysetka[i][k])
+            stroka+='|'
         print(stroka)
-        t+=setka_
 
 def askwin(win_combinations):   
     for i in range(len(win_combinations)-1):
@@ -60,38 +63,47 @@ def askwin(win_combinations):
 
 def win(n):
     k=0
-    mass=[]
+    Temp=True
     # проверка по строкам
-    for i in range(n):
-        for s in range(k,k+n):
-            mass.append(arraysetka[s])
-        if askwin(mass):
-            return True
-        else:
-            k+=n
-
-    mass.clear()
+    for mass_stroka in arraysetka:
+        for i in range(len(mass_stroka)-1):
+            if mass_stroka[i]!=mass_stroka[i+1]:
+               Temp=False
+            else:
+                Temp=True  
+    if Temp:
+        return True
         # проверка по столбцам
-    for i in range(n):  
-        mass.clear()
-        for s in range(i,i+n*(n-1)+1,n):
-            mass.append(arraysetka[s])
-        if askwin(mass):
-            return True
-
-    mass.clear()
+    k=0
+    Temp=True
+    for i in range(n-1):
+        if arraysetka[i][k]!=arraysetka[i+1][k]:
+            Temp=False
+        else:
+            Temp=True
+        k+=1
+    if Temp:
+        return True
      # проверка по диагоналям
-    for i in range(0,n**2,n+1):
-        mass.append(arraysetka[i])
-    if askwin(mass):
-            return True
-
-    mass.clear()
-    for i in range(n-1,n**2-n+1,n-1):
-        mass.append(arraysetka[i])
-    if askwin(mass):
-            return True
-        
+    k=0
+    for i in range(n-1):
+        if arraysetka[i][k]!=arraysetka[i+1][k+1]:
+                Temp=False
+        else:
+            Temp=True
+        k+=1
+    if Temp:
+        return True
+    Temp=True
+    k=n-1
+    for i in range(n-1):
+        if arraysetka[i][k]!=arraysetka[i+1][k-1]:
+            Temp=False
+        else:
+            Temp=True
+        k+=1
+    if Temp:
+        return True
     return False
 
 def GetSymbol():    
@@ -100,8 +112,13 @@ def GetSymbol():
 
 arraysetka=[]
 arraysteps=[]
-for i in range(1,setka**2+1):
-    arraysetka.append(i)
+current=1
+for i in range(setka):
+    mass=[]
+    for k in range(setka):
+        mass.append(current)
+        current+=1
+    arraysetka.append(mass)
 ToConsoleArray(setka)
 words = ("X", "O")
 while True:
