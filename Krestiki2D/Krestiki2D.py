@@ -2,6 +2,7 @@
 print ("Возврат хода - буква R")
 setka=int(input('введи размер желаемого поля: '))
 fulldlina=len(str(setka**2))
+
 def is_integer(s):
     try:
         int(s)
