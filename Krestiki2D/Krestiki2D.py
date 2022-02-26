@@ -1,7 +1,7 @@
 # сделать двумерный массив
 print ("Возврат хода - буква R")
 setka=int(input('введи размер желаемого поля: '))
-fulldlina=len(str(setka**2))
+fulldlina=2*len(str(setka))+1
  
 def is_integer(s):
     try:
@@ -11,62 +11,56 @@ def is_integer(s):
         return False 
 massive=[] 
 current2=1
-def vvod_XO(bukva_,n):
-    x=input('следующий ход игрока' + ' '+ bukva_ +', выберите номер: ')
-    
-    if x.upper()=='R' :
-        if  len(arraysteps)!=0:
-            stepp=arraysteps[len(arraysteps)-1]# последний ход
-            current2=1
-            for i in range(setka):
-                mass=[]
-                for k in range(setka):
-                    mass.append(current2)
-                    if massive[i][k]==stepp:
-                        arraysetka[i][k]=stepp
-                        break
-                    current2+=1
-                massive.append(mass)
-            arraysteps.pop(len(arraysteps)-1)
-     # готово
-    if is_integer(x) :
-        x=int(x)
-        try:
-            if not(x<=n**2 and x>0 ):
-                raise BaseException("введи допустимое значение")
+def vvod_XO(bukva_,setka_):
+    temp=input('следующий ход игрока' + bukva_+'  , выберите номер в формате [*,*]: ')
+    if len(temp)==1:
+        x=temp
+        if x.upper()=='R' :
+            if  len(arraysteps)!=0:
+                stepp=arraysteps[len(arraysteps)-1]# последний ход
+                arraysetka[stepp[0]][stepp[1]]=""
+                arraysteps.pop(len(arraysteps)-1)
+    else: 
+        x,y = map(str, temp.split(" "))
+        # готово
+        if is_integer(x) :
+            x=int(x)
+            y=int(y)
+            try:
+   
+                if  (y>setka-1 and y<0 ) or (x>setka-1 and x>0 ):
+                    raise BaseException("введи допустимое значение")
             
-            if x in arraysteps:
-                raise BaseException("поле занято")            
-            current=1
-            for i in range(setka):
-                for k in range(setka):
-                    if x==current:
-                        arraysetka[i][k]=bukva_
-                    current+=1
-                      
-            arraysteps.append(x)
-        except BaseException as ve:
-          print(ve)
-          vvod_XO(bukva_,n)    
+                #if not is_integer(arraysetka[x][y]):
+                #    raise BaseException("поле занято")            
+            
+                arraysetka[x][y]=bukva_                      
+                arraysteps.append([x,y])
+            except BaseException as ve:
+              print(ve)
+              vvod_XO(bukva_,setka_)    
         
 
-def ResearchOfSize(current_element):    
+def ResearchOfSize(x,y,z):    
     global fulldlina
-    dlina=len(str(current_element))
-    return fulldlina-dlina
+    dlina=len(str(x)+str(y))
+    return fulldlina-dlina-z
 
 def ToConsoleArray(setka_):    
     t=0
     for i in range(setka_):
         stroka='|'
         for k in range(setka_):
-            stroka+=str(arraysetka[i][k]) +' '*ResearchOfSize(arraysetka[i][k])
+            if arraysetka[i][k]!="":
+               stroka+=arraysetka[i][k] + " "*ResearchOfSize(i,k,0)
+            else:
+               stroka+=str(i)+","+str(k) + " "*ResearchOfSize(i,k,1)
             stroka+='|'
         print(stroka)
 
 def askwin(win_combinations):   
     for i in range(len(win_combinations)-1):
-        if win_combinations[i]!=win_combinations[i+1]:
+        if win_combinations[i]!=win_combinations[i+1] or win_combinations[i]=="" or win_combinations[i+1]=="": 
             return False
     return True
 
@@ -74,7 +68,7 @@ def win(setka_):
 
     # проверка по строкам  
     # проверка по столбцам
- 
+    
     Astolbec=[]
     Astroka=[]
     ADiagDown=[]
@@ -101,7 +95,7 @@ current=1
 for i in range(setka):
     mass=[]
     for k in range(setka):
-        mass.append(current)
+        mass.append("")
         current+=1
     arraysetka.append(mass)
 ToConsoleArray(setka)
