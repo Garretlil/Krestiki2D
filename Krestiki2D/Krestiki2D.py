@@ -12,33 +12,29 @@ def is_integer(s):
 massive=[] 
 current2=1
 def vvod_XO(bukva_,setka_):
-    temp=input('следующий ход игрока' + bukva_+'  , выберите номер в формате [*,*]: ')
-    if len(temp)==1:
-        x=temp
-        if x.upper()=='R' :
+    temp=input('следующий ход игрока' + bukva_+'  , выберите номер в формате [,]: ')
+
+    if temp.upper()=='R' :
             if  len(arraysteps)!=0:
                 stepp=arraysteps[len(arraysteps)-1]# последний ход
                 arraysetka[stepp[0]][stepp[1]]=""
                 arraysteps.pop(len(arraysteps)-1)
     else: 
-        x,y = map(str, temp.split(" "))
-        # готово
-        if is_integer(x) :
-            x=int(x)
-            y=int(y)
-            try:
+        x,y = map(int, temp.split(" "))
+
+        try:
    
-                if  (y>setka-1 and y<0 ) or (x>setka-1 and x>0 ):
-                    raise BaseException("введи допустимое значение")
+            if  (y>setka-1 and y<0 ) or (x>setka-1 and x>0 ):
+                raise BaseException("введи допустимое значение")
             
-                #if not is_integer(arraysetka[x][y]):
-                #    raise BaseException("поле занято")            
+            if  (arraysetka[x][y]!=""):
+                raise BaseException("поле занято")            
             
-                arraysetka[x][y]=bukva_                      
-                arraysteps.append([x,y])
-            except BaseException as ve:
-              print(ve)
-              vvod_XO(bukva_,setka_)    
+            arraysetka[x][y]=bukva_                      
+            arraysteps.append([x,y])
+        except BaseException as ve:
+            print(ve)
+            vvod_XO(bukva_,setka_)    
         
 
 def ResearchOfSize(x,y,z):    
@@ -52,7 +48,7 @@ def ToConsoleArray(setka_):
         stroka='|'
         for k in range(setka_):
             if arraysetka[i][k]!="":
-               stroka+=arraysetka[i][k] + " "*ResearchOfSize(i,k,0)
+               stroka+=arraysetka[i][k] + " "*ResearchOfSize(i,k,-1)
             else:
                stroka+=str(i)+","+str(k) + " "*ResearchOfSize(i,k,1)
             stroka+='|'
